@@ -11,6 +11,16 @@ def writer(country_city_cnt):
         for key, value in country_city_cnt.items():
             writer.writerow([key,value])
 
+#adding marker filter based on population's scalar quantities
+def color_prod(population):
+    if population < 3000000:
+        return "blue"
+    elif (population >= 3000000) and (population < 5000000):
+        return "green"
+    elif (population >= 5000000) and (population < 7000000):
+        return "orange"
+    else:
+        return "red"
 
 '''This script only puts on map big cities that has population over 2 mil'''
 if __name__ =='__main__':
@@ -37,7 +47,7 @@ if __name__ =='__main__':
     for i in range(len(cities)):
         fg.add_child(folium.Marker(location = [lattitudes[i], longitudes[i]],\
         popup=str(cities[i] + ", " + "Popution: " + str(pop[i]) + ", " "Country: " \
-        + str(countries[i]))))
+        + str(countries[i])), icon= folium.Icon(color = color_prod(pop[i]))))
 
         if countries[i] not in country_city_cnt:
             country_city_cnt[countries[i]] = 1
