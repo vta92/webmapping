@@ -22,6 +22,8 @@ def color_prod(population):
     else:
         return "red"
 
+
+
 '''This script only puts on map big cities that has population over 2 mil'''
 if __name__ =='__main__':
 
@@ -45,9 +47,9 @@ if __name__ =='__main__':
 
     #putting markers on the map
     for i in range(len(cities)):
-        fg.add_child(folium.Marker(location = [lattitudes[i], longitudes[i]],\
-        popup=str(cities[i] + ", " + "Popution: " + str(pop[i]) + ", " "Country: " \
-        + str(countries[i])), icon= folium.Icon(color = color_prod(pop[i]))))
+        fg.add_child(folium.CircleMarker(location = [lattitudes[i], longitudes[i]],\
+        radius = 10, popup=str(cities[i] + ", " + "Popution: " + str(pop[i]) + ", " "Country: " \
+        + str(countries[i])), fill_color = color_prod(pop[i]), color = 'black', fill_opacity = 0.8))
 
         if countries[i] not in country_city_cnt:
             country_city_cnt[countries[i]] = 1
