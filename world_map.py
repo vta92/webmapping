@@ -42,12 +42,12 @@ if __name__ =='__main__':
 
     #initialize a map
     map = folium.Map(location =[10.8231,106.6297], zoom_start= 6, tiles = "cartodbpositron")
-    fg = folium.FeatureGroup(name = 'My map')
+    fg_markers = folium.FeatureGroup(name = 'Cities')
 
 
     #putting markers on the map
     for i in range(len(cities)):
-        fg.add_child(folium.CircleMarker(location = [lattitudes[i], longitudes[i]],\
+        fg_markers.add_child(folium.CircleMarker(location = [lattitudes[i], longitudes[i]],\
         radius = 10, popup=str(cities[i] + ", " + "Popution: " + str(pop[i]) + ", " "Country: " \
         + str(countries[i])), fill_color = color_prod(pop[i]), color = 'black', fill_opacity = 0.8))
 
@@ -56,7 +56,23 @@ if __name__ =='__main__':
         else:
             country_city_cnt[countries[i]] += 1
 
-    map.add_child(fg)
+    #GeoJson object adds polygon borders in map, adding this to the normal featuregroup layer
+    #fill the borders accordingly
+    fg_borders = folium.FeatureGroup(name = 'Countries')
+
+    fg_borders.add_child(folium.GeoJson(data = open("world.json", "r", encoding="utf-8-sig"),
+    style_function=lambda x: {'fillColor':'green' if x['properties']['POP2005'] < 10000000 else 'orange' \
+    if 5000000<= x['properties']['POP2005']< 50000000 else 'red'}))
+
+
+
+    map.add_child(fg_markers)
+    map.add_child(fg_borders)
+
+    #layer control to turn on/off layers. Important to add after featuregroup added
+    #so we can find the layers, otherwise it's a base map due to no fg added
+    map.add_child(folium.LayerControl(position='topright', collapsed= False))
+
     map.save('world_map')
     #print(country_city_cnt)
     writer(country_city_cnt)

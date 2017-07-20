@@ -1,0 +1,16 @@
+Layers:
+
+Each time we add_child, we're adding a layer. When a FeatureGroup is added to the map,
+we only have 1 layer (this sole fg layer). No hierarchy within the fg this way. Think
+how would LayerControl works?
+Solution: to control layers, separate fg's.
+
+FeatureGroup definition:
+ |  Create a FeatureGroup layer ; you can put things in it and handle them
+ |  as a single layer.  For example, you can add a LayerControl to
+ |  tick/untick the whole group.
+
+Don't add a bunch of child directly to the map, it will mess up the LayerControl
+
+
+use help(folium.method) for all parameters and inherited stuff
